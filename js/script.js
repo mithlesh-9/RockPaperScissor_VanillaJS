@@ -10,7 +10,7 @@ let isWinner = {
 	//paper
 	[HANDSTYPE[1]]: {
 		[HANDSTYPE[0]]: true,
-		[HANDSTYPE[1]]: false,
+		[HANDSTYPE[2]]: false,
 	},
 	//scissor
 	[HANDSTYPE[2]]: {
@@ -20,7 +20,7 @@ let isWinner = {
 };
 
 function chooseSymbol(handSelected) {
-	window.localStorage.setItem('user', handSelected);
+	addUser(handSelected);
 	gamePlay(handSelected);
 }
 
@@ -46,22 +46,20 @@ function computerChoice(
 		let houseElement =
 			house === 'rock' ? rock : house === 'paper' ? paper : scissor;
 
-		let newScore = window.localStorage.getItem('score');
+		let newScore = getItem('score');
 
-		if (isWinner[user][house]) {
+		const hasWon = isWinner[user][house];
+		console.log(hasWon);
+		if (hasWon == undefined) {
+			infoTxt.textContent = 'Draw';
+		} else if (hasWon) {
 			newScore++;
 			infoTxt.textContent = 'You Won';
 			userElement.classList.add('winner');
-		}
-
-		if (isWinner[user][house] == false) {
+		} else if (hasWon == false) {
 			newScore--;
 			infoTxt.textContent = 'You Lose';
 			houseElement.classList.add('winner');
-		}
-
-		if (isWinner[user][house] == undefined) {
-			infoTxt.textContent = 'Draw';
 		}
 
 		let playAgain = document.createElement('button');
@@ -69,7 +67,7 @@ function computerChoice(
 		playAgain.textContent = 'PLAY AGAIN';
 
 		playAgain.addEventListener('click', function (e) {
-			window.localStorage.removeItem('user');
+			removeUser();
 			alignment.remove();
 			showHands();
 		});
@@ -82,7 +80,11 @@ function computerChoice(
 
 		houseHandWrapper.append(houseElement);
 
-		window.localStorage.setItem('score', newScore);
+		if (newScore < 0) {
+			newScore = 0;
+		}
+		setItem('score', newScore);
+
 		scoreElem.textContent = newScore;
 	}, 2000);
 }
@@ -212,10 +214,15 @@ function createHand(symbol, className) {
 }
 
 function startGame() {
-	let score = window.localStorage.getItem('score') || 0;
+	let score = getItem('score');
+	if (!score) {
+		addScore(0);
+		score = 0;
+	}
+
 	scoreElem.textContent = score;
 
-	let user = window.localStorage.getItem('user');
+	let user = getItem('user');
 	if (user) {
 		gamePlay(user);
 	} else {
