@@ -2,7 +2,7 @@
 
 ![Design preview for the Rock, Paper, Scissors coding challenge](./Screenshot/screenshot.jpg)
 
-[Live URL]🚀(https://m-rockpaperscissor.netlify.app)
+[Live URL](https://m-rockpaperscissor.netlify.app)🚀
 
 ## Welcome! 👋
 
