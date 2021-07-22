@@ -1,7 +1,7 @@
 let scoreElem = document.querySelector('.digit');
 let HANDSTYPE = ['rock', 'paper', 'scissor'];
 
-let isWinner = {
+const isWinner = {
 	//rock
 	[HANDSTYPE[0]]: {
 		[HANDSTYPE[1]]: false,
@@ -18,6 +18,7 @@ let isWinner = {
 		[HANDSTYPE[0]]: false,
 	},
 };
+Object.seal(isWinner);
 
 function chooseSymbol(handSelected) {
 	addUser(handSelected);
@@ -49,7 +50,6 @@ function computerChoice(
 		let newScore = getItem('score');
 
 		const hasWon = isWinner[user][house];
-		console.log(hasWon);
 		if (hasWon == undefined) {
 			infoTxt.textContent = 'Draw';
 		} else if (hasWon) {
